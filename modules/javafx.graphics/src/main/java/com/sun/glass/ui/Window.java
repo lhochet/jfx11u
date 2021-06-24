@@ -160,6 +160,14 @@ public abstract class Window {
      */
     @Native public static final int UNIFIED = 1 << 8;
 
+    /**
+     * Windows AppBar
+     */
+    @Native public static final int APP_BAR_RIGHT = 1 << 20;
+    @Native public static final int APP_BAR_TOP = 1 << 21;
+    @Native public static final int APP_BAR_LEFT = 1 << 22;
+    @Native public static final int APP_BAR_BOTTOM = 1 << 23;
+
     final static public class State {
         @Native public static final int NORMAL = 1;
         @Native public static final int MINIMIZED = 2;
@@ -250,13 +258,17 @@ public abstract class Window {
             default:
                 throw new RuntimeException("The visual kind should be UNTITLED, TITLED, or TRANSPARENT, but not a combination of these");
         }
-        switch (styleMask & (POPUP | UTILITY)) {
+        switch (styleMask & (POPUP | UTILITY | APP_BAR_LEFT | APP_BAR_TOP | APP_BAR_RIGHT | APP_BAR_BOTTOM)) {
             case NORMAL:
             case POPUP:
             case UTILITY:
+            case APP_BAR_LEFT:
+            case APP_BAR_TOP:
+            case APP_BAR_RIGHT:
+            case APP_BAR_BOTTOM:
                 break;
             default:
-                throw new RuntimeException("The functional type should be NORMAL, POPUP, or UTILITY, but not a combination of these");
+                throw new RuntimeException("The functional type should be NORMAL, POPUP, UTILITY or APP_BAR, but not a combination of these");
         }
 
         if (((styleMask & UNIFIED) != 0)

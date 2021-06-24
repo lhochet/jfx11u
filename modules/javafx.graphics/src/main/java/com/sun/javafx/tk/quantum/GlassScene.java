@@ -355,7 +355,12 @@ abstract class GlassScene implements TKScene {
 
     final Paint getCurrentPaint() {
         WindowStage windowStage = stage instanceof WindowStage ? (WindowStage)stage : null;
-        if ((windowStage != null) && windowStage.getStyle() == StageStyle.TRANSPARENT) {
+        if ((windowStage != null) 
+                && (windowStage.getStyle() == StageStyle.TRANSPARENT 
+                    || windowStage.getStyle() == StageStyle.APPBAR_BOTTOM_TRANSPARENT
+                    || windowStage.getStyle() == StageStyle.APPBAR_LEFT_TRANSPARENT
+                    || windowStage.getStyle() == StageStyle.APPBAR_RIGHT_TRANSPARENT
+                    || windowStage.getStyle() == StageStyle.APPBAR_TOP_TRANSPARENT)) {
             return Color.TRANSPARENT.equals(fillPaint) ? null : fillPaint;
         }
         if ((fillPaint != null) && fillPaint.isOpaque() && (fillPaint.getType() == Paint.Type.COLOR)) {

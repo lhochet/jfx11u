@@ -2015,7 +2015,11 @@ public class Scene implements EventTarget {
 
         Window w = getWindow();
         if (w instanceof Stage
-                && ((Stage) w).getStyle() == StageStyle.TRANSPARENT
+                && (((Stage) w).getStyle() == StageStyle.TRANSPARENT 
+                    || ((Stage) w).getStyle() == StageStyle.APPBAR_BOTTOM_TRANSPARENT
+                    || ((Stage) w).getStyle() == StageStyle.APPBAR_LEFT_TRANSPARENT
+                    || ((Stage) w).getStyle() == StageStyle.APPBAR_RIGHT_TRANSPARENT
+                    || ((Stage) w).getStyle() == StageStyle.APPBAR_TOP_TRANSPARENT)
                 && getFill() == null) {
             return false;
         }

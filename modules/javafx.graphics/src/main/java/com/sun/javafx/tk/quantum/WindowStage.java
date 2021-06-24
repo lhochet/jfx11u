@@ -114,7 +114,11 @@ class WindowStage extends GlassStage {
             fxStage = null;
         }
 
-        transparent = stageStyle == StageStyle.TRANSPARENT;
+        transparent = stageStyle == StageStyle.TRANSPARENT 
+                        || stageStyle == StageStyle.APPBAR_BOTTOM_TRANSPARENT
+                        || stageStyle == StageStyle.APPBAR_LEFT_TRANSPARENT
+                        || stageStyle == StageStyle.APPBAR_RIGHT_TRANSPARENT
+                        || stageStyle == StageStyle.APPBAR_TOP_TRANSPARENT;
         if (owner == null) {
             if (this.modality == Modality.WINDOW_MODAL) {
                 this.modality = Modality.NONE;
@@ -176,6 +180,10 @@ class WindowStage extends GlassStage {
                             }
                             // fall through
                         case DECORATED:
+                        case APPBAR_RIGHT:
+                        case APPBAR_TOP:
+                        case APPBAR_LEFT:
+                        case APPBAR_BOTTOM:
                             windowMask |=
                                 Window.TITLED | Window.CLOSABLE |
                                 Window.MINIMIZABLE | Window.MAXIMIZABLE;
@@ -183,10 +191,56 @@ class WindowStage extends GlassStage {
                                 windowMask &=
                                     ~(Window.MINIMIZABLE | Window.MAXIMIZABLE);
                             }
+                            switch (style) {
+                                case APPBAR_RIGHT:
+                                    windowMask |= Window.APP_BAR_RIGHT;
+                                    break;
+                                case APPBAR_TOP:
+                                    windowMask |= Window.APP_BAR_TOP;
+                                    break;
+                                case APPBAR_LEFT:
+                                    windowMask |= Window.APP_BAR_LEFT;
+                                    break;
+                                case APPBAR_BOTTOM:
+                                    windowMask |= Window.APP_BAR_BOTTOM;
+                                    break;
+                                default:
+                                    // do nothing
+                            }
                             resizable = true;
                             break;
                         case UTILITY:
                             windowMask |=  Window.TITLED | Window.UTILITY | Window.CLOSABLE;
+                            break;
+                        case APPBAR_RIGHT_TRANSPARENT:
+                        case APPBAR_TOP_TRANSPARENT:
+                        case APPBAR_LEFT_TRANSPARENT:
+                        case APPBAR_BOTTOM_TRANSPARENT:
+                            windowMask |=
+                                Window.CLOSABLE |
+                                Window.MINIMIZABLE | Window.MAXIMIZABLE;
+                            if (ownerWindow != null || modality != Modality.NONE) {
+                                windowMask &=
+                                    ~(Window.MINIMIZABLE | Window.MAXIMIZABLE);
+                            }
+                            windowMask |= Window.TRANSPARENT;
+                            switch (style) {
+                                case APPBAR_RIGHT_TRANSPARENT:
+                                    windowMask |= Window.APP_BAR_RIGHT;
+                                    break;
+                                case APPBAR_TOP_TRANSPARENT:
+                                    windowMask |= Window.APP_BAR_TOP;
+                                    break;
+                                case APPBAR_LEFT_TRANSPARENT:
+                                    windowMask |= Window.APP_BAR_LEFT;
+                                    break;
+                                case APPBAR_BOTTOM_TRANSPARENT:
+                                    windowMask |= Window.APP_BAR_BOTTOM;
+                                    break;
+                                default:
+                                    // do nothing
+                            }
+                            resizable = true;
                             break;
                         default:
                             windowMask |=

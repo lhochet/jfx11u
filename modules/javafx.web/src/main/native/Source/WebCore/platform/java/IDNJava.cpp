@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012, 2019, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,8 +25,8 @@
 
 #include "config.h"
 #include "IDNJava.h"
-#include "PlatformJavaClasses.h"
-#include "com_sun_webkit_network_URLLoader.h"
+#include <wtf/java/JavaEnv.h>
+#include "com_sun_webkit_network_URLLoaderBase.h"
 
 namespace IDNJavaInternal {
 
@@ -62,9 +62,8 @@ String toASCII(const String& hostname)
             idnClass,
             toASCIIMID,
             (jstring)hostname.toJavaString(env),
-            com_sun_webkit_network_URLLoader_ALLOW_UNASSIGNED));
+            com_sun_webkit_network_URLLoaderBase_ALLOW_UNASSIGNED));
     WTF::CheckAndClearException(env);
-
     return String(env, result);
 }
 

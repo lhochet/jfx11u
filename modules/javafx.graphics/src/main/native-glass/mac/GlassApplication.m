@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2017, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -98,28 +98,19 @@ jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
     {
         assert(pthread_main_np() == 1);
         JNIEnv *env = jEnv;
-        if (env != NULL)
+        if (env != NULL && self->jRunnable != NULL)
         {
             (*env)->CallVoidMethod(env, self->jRunnable, jRunnableRun);
             GLASS_CHECK_EXCEPTION(env);
+
+            (*env)->DeleteGlobalRef(env, self->jRunnable);
         }
+
+        self->jRunnable = NULL;
 
         [self release];
     }
     [pool drain];
-}
-
-- (void)dealloc
-{
-    assert(pthread_main_np() == 1);
-    JNIEnv *env = jEnv;
-    if (env != NULL)
-    {
-        (*env)->DeleteGlobalRef(env, self->jRunnable);
-    }
-    self->jRunnable = NULL;
-
-    [super dealloc];
 }
 
 @end

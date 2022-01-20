@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2020, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -218,6 +218,13 @@ void FrameLoaderClientJava::dispatchDidNavigateWithinPage()
                   frame()->document()->url().string(),
                   frame()->loader().documentLoader()->responseMIMEType(),
                   1.0 /* progress */);
+}
+
+// Called from twkInit to initialize the client. This will ensure that
+// the page field is initialized before any operation that needs it
+void FrameLoaderClientJava::init()
+{
+    (void)page();
 }
 
 Page* FrameLoaderClientJava::page()

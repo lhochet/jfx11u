@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2020, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2021, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -924,8 +924,11 @@ JNIEXPORT void JNICALL Java_com_sun_webkit_WebPage_twkInit
     page->setDeviceScaleFactor(devicePixelScale);
 
     settings.setLinkPrefetchEnabled(true);
-    static_cast<FrameLoaderClientJava&>(page->mainFrame().loader().client())
-                                            .setFrame(&page->mainFrame());
+
+    FrameLoaderClientJava& client =
+        static_cast<FrameLoaderClientJava&>(page->mainFrame().loader().client());
+    client.init();
+    client.setFrame(&page->mainFrame());
 
     page->mainFrame().init();
 
